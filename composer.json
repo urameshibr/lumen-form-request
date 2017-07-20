@@ -1,0 +1,17 @@
+{
+    "name": "urameshibr/lumen-form-requesst",
+    "description": "Laravel Form Request adaptation for Lumen framework.",
+    "keywords": ["form", "request", "lumen"],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": ">=5.6.4",       
+    },
+    "autoload": {
+        "psr-4": {
+            "Urameshibr\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
