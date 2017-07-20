@@ -1,5 +1,5 @@
 {
-    "name": "urameshibr/lumen-form-requesst",
+    "name": "urameshibr/lumen-form-request",
     "description": "Laravel Form Request adaptation for Lumen framework.",
     "keywords": ["form", "request", "lumen"],
     "license": "MIT",
