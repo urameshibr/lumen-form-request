@@ -11,7 +11,5 @@
         "psr-4": {
             "Urameshibr\\": "src/"
         }
-    },
-    "minimum-stability": "dev-master",
-    "prefer-stable": true
+    }
 }
