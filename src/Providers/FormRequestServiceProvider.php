@@ -2,7 +2,7 @@
 
 namespace Urameshibr\Providers;
 
-use App\Http\Requests\FormRequest;
+use Urameshibr\Requests\FormRequest;
 use Laravel\Lumen\Http\Redirector;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
