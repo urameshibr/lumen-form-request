@@ -13,7 +13,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidatesWhenResolvedTrait;
 use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class FormRequest extends Request implements ValidatesWhenResolved
 {
@@ -30,12 +29,6 @@ class FormRequest extends Request implements ValidatesWhenResolved
      * @var \Laravel\Lumen\Http\Redirector
      */
     protected $redirector;
-    /**
-     * The URI to redirect to if validation fails.
-     *
-     * @var string
-     */
-    protected $redirect;
     /**
      * The route to redirect to if validation fails.
      *
@@ -126,16 +119,11 @@ class FormRequest extends Request implements ValidatesWhenResolved
      * Get the proper failed validation response for the request.
      *
      * @param  array  $errors
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function response(array $errors)
     {
-        if (($this->ajax() && ! $this->pjax()) || $this->wantsJson()) {
-            return new JsonResponse($errors, 422);
-        }
-        return $this->redirector->to($this->getRedirectUrl())
-            ->withInput($this->except($this->dontFlash))
-            ->withErrors($errors, $this->errorBag);
+        return new JsonResponse($errors, 422);
     }
     /**
      * Get the response for a forbidden operation.
@@ -155,23 +143,6 @@ class FormRequest extends Request implements ValidatesWhenResolved
     protected function formatErrors(Validator $validator)
     {
         return $validator->getMessageBag()->toArray();
-    }
-    /**
-     * Get the URL to redirect to on a validation error.
-     *
-     * @return string
-     */
-    protected function getRedirectUrl()
-    {
-        $url = $this->redirector->getUrlGenerator();
-        if ($this->redirect) {
-            return $url->to($this->redirect);
-        } elseif ($this->redirectRoute) {
-            return $url->route($this->redirectRoute);
-        } elseif ($this->redirectAction) {
-            return $url->action($this->redirectAction);
-        }
-        return $url->previous();
     }
     /**
      * Set the Redirector instance.
