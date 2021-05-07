@@ -17,12 +17,14 @@ use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 class FormRequest extends Request implements ValidatesWhenResolved
 {
     use ValidatesWhenResolvedTrait;
+
     /**
      * The container instance.
      *
      * @var \Illuminate\Container\Container
      */
     protected $container;
+
     /**
      * The redirector instance.
      *
@@ -35,12 +37,14 @@ class FormRequest extends Request implements ValidatesWhenResolved
      * @var string
      */
     protected $redirectRoute;
+
     /**
      * The controller action to redirect to if validation fails.
      *
      * @var string
      */
     protected $redirectAction;
+
     /**
      * The key to be used for the view error bag.
      *
@@ -111,6 +115,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
     {
         return $this->all();
     }
+
     /**
      * Handle a failed validation attempt.
      *
@@ -137,6 +142,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
         }
         return false;
     }
+
     /**
      * Handle a failed authorization attempt.
      *
@@ -159,6 +165,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
     {
         return new JsonResponse($errors, 422);
     }
+
     /**
      * Get the response for a forbidden operation.
      *
@@ -220,6 +227,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
     {
         return [];
     }
+
     /**
      * Get custom attributes for validator errors.
      *
