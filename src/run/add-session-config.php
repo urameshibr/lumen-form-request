@@ -1,25 +1,39 @@
 <?php
 
+
 $filename = "session.php";
 
-$source = __DIR__ . DIRECTORY_SEPARATOR
+$projectConfigDir = __DIR__
+    . DIRECTORY_SEPARATOR . ".."
+    . DIRECTORY_SEPARATOR . ".."
+    . DIRECTORY_SEPARATOR . ".."
+    . DIRECTORY_SEPARATOR . ".."
+    . DIRECTORY_SEPARATOR . ".."
+    . DIRECTORY_SEPARATOR
+    . "config";
+
+$packageConfigDir = __DIR__
+    . DIRECTORY_SEPARATOR
     . ".."
     . DIRECTORY_SEPARATOR
-    . "config"
+    . "config";
+
+$source = $packageConfigDir
     . DIRECTORY_SEPARATOR
     . $filename;
 
-$destination = __DIR__
-    . ".."
-    . DIRECTORY_SEPARATOR . ".."
-    . DIRECTORY_SEPARATOR . ".."
-    . DIRECTORY_SEPARATOR . ".."
-    . DIRECTORY_SEPARATOR . ".."
-    . DIRECTORY_SEPARATOR . ".."
-    . DIRECTORY_SEPARATOR
-    . "config"
+$destination = $projectConfigDir
     . DIRECTORY_SEPARATOR
     . $filename;
+
+$projectHasConfigDir = is_dir($projectConfigDir);
+
+if (!$projectHasConfigDir) {
+    echo "\n--------------------------------------------------------------------";
+    echo "\n| Creating 'config' directory in project...                        |";
+    echo "\n--------------------------------------------------------------------";
+    mkdir($projectConfigDir);
+}
 
 if (!copy($source, $destination)) {
     echo "\n--------------------------------------------------------------------";
