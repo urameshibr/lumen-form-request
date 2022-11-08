@@ -2,13 +2,14 @@
 
 namespace Urameshibr\Providers;
 
+use Urameshibr\Concerns\SessionSingleton;
 use Urameshibr\Requests\FormRequest;
 use Laravel\Lumen\Http\Redirector;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 
-class FormRequestServiceProvider extends ServiceProvider
+class LumenFormRequestServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
@@ -19,6 +20,7 @@ class FormRequestServiceProvider extends ServiceProvider
     {
         //
     }
+
     /**
      * Bootstrap the application services.
      *
@@ -26,19 +28,25 @@ class FormRequestServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        SessionSingleton::register($this->app);
+
         $this->app->afterResolving(ValidatesWhenResolved::class, function ($resolved) {
             $resolved->validateResolved();
         });
+
         $this->app->resolving(FormRequest::class, function ($request, $app) {
             $this->initializeRequest($request, $app['request']);
             $request->setContainer($app)->setRedirector($app->make(Redirector::class));
         });
+
+        $this->vendorPublishWhenTheCommandIsAvaillable();
     }
+
     /**
      * Initialize the form request with data from the given request.
      *
-     * @param  FormRequest $form
-     * @param  \Symfony\Component\HttpFoundation\Request  $current
+     * @param FormRequest $form
+     * @param \Symfony\Component\HttpFoundation\Request $current
      * @return void
      */
     protected function initializeRequest(FormRequest $form, Request $current)
@@ -55,5 +63,13 @@ class FormRequestServiceProvider extends ServiceProvider
         }
         $form->setUserResolver($current->getUserResolver());
         $form->setRouteResolver($current->getRouteResolver());
+    }
+
+    private function vendorPublishWhenTheCommandIsAvaillable()
+    {
+        // Publish a config file when the project has "vendor:publish" command
+        $this->publishes([
+            __DIR__ . '/../Concerns/RegisterSessionSingleton/config/session.php' => base_path('config/session.php')
+        ], 'config');
     }
 }
